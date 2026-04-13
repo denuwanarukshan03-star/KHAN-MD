@@ -1,1 +1,31 @@
 
+name: Caching Primes
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Restore cached Primes
+      id: cache-primes-restore
+      uses: actions/cache/restore@v5
+      with:
+        path: |
+          path/to/dependencies
+          some/other/dependencies
+        key: ${{ runner.os }}-primes
+    .
+    . //intermediate workflow steps
+    .
+    - name: Save Primes
+      id: cache-primes-save
+      uses: actions/cache/save@v5
+      with:
+        path: |
+          path/to/dependencies
+          some/other/dependencies
+        key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
